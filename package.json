@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "debug": "^4.3.2",
+    "express": "^4.17.1",
+    "volleyball": "^1.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "scripts": {
+    "dev": "nodemon"
+  }
+}
