@@ -1,10 +1,11 @@
 const express = require('express');
-const app = express();
+
 const debug = require('debug')('http');
 const volleyball = require('volleyball')
 
 require('debug').enable('http');
 
+const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
