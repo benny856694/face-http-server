@@ -11,11 +11,11 @@ app.use(express.json());
 app.use(volleyball)
 
 app.get('/', (req, res) => {
-    res.json({error: 0, message: ''})
+    res.json({error: 0, message: 'weldone'})
 })
 
-app.post('/', (req, res) => {
-
+app.post('/upload/record', (req, res) => {
+    debug("body: %o", req.body);
     res.status(200);
 })
 
