@@ -15,7 +15,9 @@ app.get('/', (req, res) => {
 })
 
 app.post('/upload/record', (req, res) => {
-    debug("seq: %s", req.body.sequence_no);
+    req.body.closeup_pic = "removed";
+    req.body.match.image = "removed";
+    debug("body: %o", req.body);
     var result = { reply: "ACK", cmd: "face", code: 0};
     result.cap_time = req.body.cap_time;
     result.sequence_no = req.body.sequence_no;
