@@ -15,8 +15,13 @@ app.get('/', (req, res) => {
 })
 
 app.post('/upload/record', (req, res) => {
-    debug("body: %o", req.body);
-    res.status(200);
+    debug("seq: %s", req.body.sequence_no);
+    var result = { reply: "ACK", cmd: "face", code: 0};
+    result.cap_time = req.body.cap_time;
+    result.sequence_no = req.body.sequence_no;
+    debug("res: %o", result);  
+    res.json(result);  
+ 
 })
 
 const port = 5000;
