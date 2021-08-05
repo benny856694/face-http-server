@@ -1,5 +1,8 @@
 {
+  "name": "sample_server",
+  "version": "1.0.0",
   "dependencies": {
+    "axios": "^0.21.1",
     "debug": "^4.3.2",
     "express": "^4.17.1",
     "volleyball": "^1.5.1"

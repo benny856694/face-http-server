@@ -1,9 +1,16 @@
 const express = require('express');
-
 const debug = require('debug')('http');
 const volleyball = require('volleyball')
+const axios = require('axios')
 
 require('debug').enable('http');
+
+axios
+.get("https://api.smartattendancenetwork.com/")
+.then((res) => {
+    debug("%o", res.data)
+})
+
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -13,6 +20,11 @@ app.use(volleyball)
 
 app.get('/', (req, res) => {
     res.json({error: 0, message: 'weldone'})
+})
+
+
+app.get('/fcm/send', (req, res) => {
+
 })
 
 app.post('/upload/record', (req, res) => {
