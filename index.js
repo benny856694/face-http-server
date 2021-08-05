@@ -11,7 +11,7 @@ const fcm = axios.create({
     baseURL: 'https://fcm.googleapis.com/fcm/send'
 })
 
-fcm.defaults.headers.common['Authorization'] = 'key=AAAA_Vt-h2U:APA91bH9KJRvVL0XL8vxdyAimE1gX_O-GVd4AQnrwFx3Tb6tY0_g9E33pcbaw6MjFpz9Yzt8FOmuD43TAKjjV-Kq0nh9PoXSeyFYCK0hHbLvZv2u8dNbjGL8TWNK8vXmbLzdw-4gQJVb'
+fcm.defaults.headers.common['Authorization'] = 'key=YOUR_KEY_HERE'
 
 
 const app = express();
