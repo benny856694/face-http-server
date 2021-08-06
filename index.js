@@ -5,6 +5,10 @@ const axios = require('axios')
 
 require('debug').enable('http');
 
+if(!process.env.FCM_SERVER_KEY) {
+    console.log('Environment variable FCM_SERVER_KEY is not set')
+    process.exit(1)
+}
 
 
 const fcm = axios.create({
