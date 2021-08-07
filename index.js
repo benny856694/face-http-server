@@ -1,21 +1,8 @@
 const express = require('express');
 const debug = require('debug')('http');
 const volleyball = require('volleyball')
-const axios = require('axios')
-
+const fcm = require('./fcm')
 require('debug').enable('http');
-
-if(!process.env.FCM_SERVER_KEY) {
-    console.log('Environment variable FCM_SERVER_KEY is not set')
-    process.exit(1)
-}
-
-
-const fcm = axios.create({
-    baseURL: 'https://fcm.googleapis.com/fcm/send'
-})
-
-fcm.defaults.headers.common['Authorization'] = `key=${process.env.FCM_SERVER_KEY}`
 
 
 const app = express();
@@ -31,14 +18,7 @@ app.post('/', (req, res) => {
 
 app.get('/fcm/send', async(req, res) => {
     try {
-        const resp = await fcm.post('', {
-            registration_ids: ['dqZn1Za9Qf6ekVbHobyQDe:APA91bE7rXBiDLxToza_S147MbPRJOTXKfIBDtou5jl1YnfJspA9FhYmketoIkrQkHekvkbjCUnot5zThTri0OKEPvJFt3WBSPMla6kaKzNBsxMJYIFINi9rouJQhEUO1tgOOhJY9rF0'],
-            notification: {
-                title: "FCM Test Message",
-                body: `Message sent @ ${new Date().toString()}`
-            }
-        })
-        
+        const resp = await fcm.sendTo()
         res.sendStatus(resp.status)
     } catch (err) {
         if(err.response) {
@@ -46,10 +26,7 @@ app.get('/fcm/send', async(req, res) => {
         } else {
             res.status(500).send(err.message)
         }
-        
     }
-    
-  
 })
 
 app.post('/upload/record', (req, res) => {
