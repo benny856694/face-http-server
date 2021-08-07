@@ -6,10 +6,11 @@ require('debug').enable('http');
 
 
 const app = express();
+app.use(volleyball)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(volleyball)
+
 
 app.post('/', (req, res) => {
     res.json({error: 0, message: 'well done!'})
