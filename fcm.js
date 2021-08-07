@@ -2,7 +2,7 @@ if(!process.env.FCM_SERVER_KEY) {
     throw 'Environment variable FCM_SERVER_KEY is not set'
 }
 
-const fcm = require('axios').create({
+const fcm = require('axios').default.create({
     baseURL: 'https://fcm.googleapis.com/fcm/send',
     headers: {Authorization: `key=${process.env.FCM_SERVER_KEY}`}
 })
