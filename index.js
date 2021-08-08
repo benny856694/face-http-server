@@ -1,8 +1,8 @@
 const express = require('express');
-const debug = require('debug')('http');
+const httpDebug = require('debug')('http');
 const volleyball = require('volleyball')
 const fcm = require('./fcm')
-require('debug').enable('http');
+const fcmDebug = require('debug')('fcm')
 
 
 const app = express();
@@ -20,6 +20,7 @@ app.post('/', (req, res) => {
 app.get('/fcm/send', async(req, res) => {
     try {
         const resp = await fcm.sendTo()
+        fcmDebug('%O', resp)
         res.sendStatus(resp.status)
     } catch (err) {
         if(err.response) {
@@ -33,15 +34,15 @@ app.get('/fcm/send', async(req, res) => {
 app.post('/upload/record', (req, res) => {
     req.body.closeup_pic = "removed";
     req.body.match && (req.body.match.image = "removed");
-    debug(`===============Receive: ${req.body.sequence_no}==================`)
-    debug("body: %o", req.body);
+    httpDebug(`===============Receive: ${req.body.sequence_no}==================`)
+    httpDebug("body: %O", req.body);
     var result = { reply: "ACK", cmd: "face", code: 0};
     result.cap_time = req.body.cap_time;
     result.sequence_no = req.body.sequence_no;
-    debug("res: %o", result);  
+    httpDebug("res: %O", result);  
     res.json(result);  
  
 })
 
 const port = 5000;
-app.listen(port, () => debug(`server started at ${port}`));
+app.listen(port, () => httpDebug(`server started at ${port}`));
