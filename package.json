@@ -5,6 +5,7 @@
     "axios": "^0.21.1",
     "debug": "^4.3.2",
     "express": "^4.17.1",
+    "google-auth-library": "^7.5.0",
     "volleyball": "^1.5.1"
   },
   "devDependencies": {
