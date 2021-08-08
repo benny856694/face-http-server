@@ -38,7 +38,7 @@ function authorize(params) {
 
         const timeOut = credientials.expiry_date - Date.now() - 3*60*1000
         setTimeout(()=>{
-            sendTo('Token will expire in 1 minutes')
+            sendTo(null, 'Token will expire in 1 minutes')
             authorize() 
         }, timeOut)
         sendTo(null, `token espires at: ${new Date(credientials.expiry_date)}, and will be refreshed at ${new Date(Date.now() + timeOut)}`)
