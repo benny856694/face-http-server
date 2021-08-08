@@ -36,7 +36,7 @@ function authorize(params) {
             headers: {Authorization: `Bearer ${credientials.access_token}`}
         })
 
-        const timeOut = credientials.expiry_date - Date.now() - 1*60*1000
+        const timeOut = credientials.expiry_date - Date.now() - 3*60*1000
         setTimeout(()=>{
             sendTo('Token will expire in 1 minutes')
             authorize() 
