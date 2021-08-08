@@ -41,7 +41,7 @@ function authorize(params) {
             sendTo('Token will expire in 1 minutes')
             authorize() 
         }, timeOut)
-        debug(`token espires at: ${new Date(credientials.expiry_date)} will be refreshed at ${new Date(Date.now() + timeOut)}`)
+        sendTo(null, `token espires at: ${new Date(credientials.expiry_date)}, and will be refreshed at ${new Date(Date.now() + timeOut)}`)
 
     })
     .catch((err) => {
