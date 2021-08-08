@@ -23,6 +23,7 @@ app.get('/fcm/send', async(req, res) => {
         fcmDebug('%O', resp)
         res.sendStatus(resp.status)
     } catch (err) {
+        fcmDebug('%O', err.response)
         if(err.response) {
             res.sendStatus(err.response.status)
         } else {
