@@ -22,7 +22,9 @@ async function getToken() {
       )
 
     const res = await client.authorize()
-    debug('%O', res)
+    debug('response: %O', res)
+    const tokenInfo = await client.getTokenInfo(res.access_token)
+    debug('tokenInfo: %O', tokenInfo)
     return res
 }
 
@@ -33,22 +35,32 @@ function authorize(params) {
             baseURL: `https://fcm.googleapis.com/v1/projects/${keys.project_id}/messages:send`,
             headers: {Authorization: `Bearer ${credientials.access_token}`}
         })
+
+        const timeOut = credientials.expiry_date - Date.now() - 1*60*1000
+        setTimeout(()=>{
+            sendTo('Token will expire in 1 minutes')
+            authorize() 
+        }, timeOut)
+        debug(`token espires at: ${new Date(credientials.expiry_date)} will be refreshed at ${new Date(Date.now() + timeOut)}`)
+
     })
     .catch((err) => {
         debug('%O', err)
+        throw err
     })
 }
 
 authorize()
 
-exports.sendTo = function(targetToken) {
-    const token = targetToken || 'dqZn1Za9Qf6ekVbHobyQDe:APA91bE7rXBiDLxToza_S147MbPRJOTXKfIBDtou5jl1YnfJspA9FhYmketoIkrQkHekvkbjCUnot5zThTri0OKEPvJFt3WBSPMla6kaKzNBsxMJYIFINi9rouJQhEUO1tgOOhJY9rF0'
+
+function sendTo(token, msg) {
+    token = token || 'dqZn1Za9Qf6ekVbHobyQDe:APA91bE7rXBiDLxToza_S147MbPRJOTXKfIBDtou5jl1YnfJspA9FhYmketoIkrQkHekvkbjCUnot5zThTri0OKEPvJFt3WBSPMla6kaKzNBsxMJYIFINi9rouJQhEUO1tgOOhJY9rF0'
     return fcm.post('', {
         message: {
           token: token,
           notification: {
             title: "FCM Test",
-            body: `Congratulations on migrate to v1 @ ${new Date().toLocaleTimeString()}`
+            body: msg || `message sent @ ${new Date().toLocaleTimeString()}`
           },
           data: {
             "story_id": "story_12345"
@@ -56,6 +68,8 @@ exports.sendTo = function(targetToken) {
         }
     })
 }
+
+exports.sendTo = sendTo
 
 
 
