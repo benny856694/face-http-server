@@ -12,7 +12,7 @@ app.use(express.json());
 
 
 
-app.post('/', (req, res) => {
+app.get('/', (req, res) => {
     res.json({error: 0, message: 'well done!'})
 })
 

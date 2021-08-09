@@ -1,3 +1,4 @@
+const fs = require('fs')
 const debug = require('debug')('fcm')
 const {JWT} = require('google-auth-library')
 
@@ -11,7 +12,8 @@ if(!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
 async function getToken() {
     keyFile = process.env.GOOGLE_APPLICATION_CREDENTIALS
     debug('%s', keyFile)
-    keys = require(keyFile)
+    buffer = fs.readFileSync(keyFile)
+    keys = JSON.parse(buffer)
     debug('%O', keys)
     const client = new JWT(
       keys.client_email,
@@ -23,8 +25,8 @@ async function getToken() {
 
     const res = await client.authorize()
     debug('response: %O', res)
-    const tokenInfo = await client.getTokenInfo(res.access_token)
-    debug('tokenInfo: %O', tokenInfo)
+    //const tokenInfo = await client.getTokenInfo(res.access_token)
+    //debug('tokenInfo: %O', tokenInfo)
     return res
 }
 
