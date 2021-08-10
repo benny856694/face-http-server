@@ -1,2 +1,6 @@
 
 get http://localhost:5000/fcm/send
+
+
+####
+get http://localhost:5000/
