@@ -80,16 +80,18 @@ function authorize(params) {
       })
 
       const timeOut = credientials.expiry_date - Date.now()
+      const threeMinutesPrior = timeOut - 3 * 60 * 1000
+      const twoMinutesPrior = timeOut - 2 * 60 * 1000
 
       setTimeout(() => {
-        sendTo(null, 'Token will expire in 1 minutes')
-      }, timeOut - 3 * 60 * 1000)
+        sendTo(null, 'Token will be refreshed in 1 minutes')
+      }, threeMinutesPrior)
 
       setTimeout(() => {
         authorize()
-      }, timeOut - 2 * 60 * 1000)
+      }, twoMinutesPrior)
 
-      sendTo(null, `token espires at: ${new Date(credientials.expiry_date)}, and will be refreshed at ${new Date(Date.now() + timeOut)}`)
+      sendTo(null, `espires at: ${new Date(credientials.expiry_date)}, refresh at ${new Date(Date.now() + twoMinutesPrior)}`)
 
     })
     .catch((err) => {
