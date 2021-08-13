@@ -56,5 +56,20 @@ app.post('/upload/record', (req, res) => {
  
 })
 
-const port = 5000;
+
+app.post('/net', (req, res) => {
+    req.body.closeup_pic = "removed";
+    req.body.match && (req.body.match.image = "removed");
+    httpDebug(`===============Receive: ${req.body.sequence_no}==================`)
+    httpDebug("body: %O", req.body);
+    var result = { code: 200, message: "success" };
+    result.cap_time = req.body.cap_time;
+    result.sequence_no = req.body.sequence_no;
+    httpDebug("res: %O", result);  
+    res.json(result);  
+ 
+})
+
+
+const port = 5001;
 app.listen(port, () => httpDebug(`server started at ${port}`));
