@@ -87,6 +87,8 @@ function getDate() {
 
 
 const healthCode = ["00","01", "10"];
+const statusCode = [200, 500];
+const errorMessages = ["操作成功！", "服务器异常"];
 
 app.post('/qrcode/login', (req, res) => {
     res.json({
@@ -121,10 +123,12 @@ app.post('/qrcode/id', (req, res) => {
 })
 
 app.post("/qrcode/code", (req, res) => {
+    let code = statusCode[random(0,1)]
+    let message = code === 200 ? errorMessages[0] : errorMessages[1]
     res.json({
         "success": true,
-        "message": "操作成功！",
-        "code": 200,
+        "message": message,
+        "code": code,
         "result": {
             "date": getDate(),
             "reason": "",
