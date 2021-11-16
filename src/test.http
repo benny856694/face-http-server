@@ -4,3 +4,10 @@ get http://localhost:5000/fcm/send
 
 ####
 get http://localhost:5000/
+
+
+###
+post http://192.168.0.69:8000
+Content-Type: application/json
+
+{"version": "0.2","cmd": "play audio", "audio_no": 0, "audio_name": "useless" }

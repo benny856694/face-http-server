@@ -22,6 +22,7 @@
   "scripts": {
     "build:prod": "webpack --config webpack.config.prod.js",
     "build:dev": "webpack --config webpack.config.js",
-    "run:dev": "nodemon dist/index.js"
+    "run:dev": "nodemon src/index.js",
+    "run:build": "nodemon dist/index"
   }
 }
