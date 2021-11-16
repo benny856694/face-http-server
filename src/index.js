@@ -71,5 +71,75 @@ app.post('/net', (req, res) => {
 })
 
 
-const port = 5001;
+function timestamp() {
+    var d = new Date();
+    return d.getTime();
+}
+
+function random(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getDate() {
+    var d = new Date();
+    return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+}
+
+
+const healthCode = ["00","01", "10"];
+
+app.post('/qrcode/login', (req, res) => {
+    res.json({
+        "success": true,
+        "message": "操作成功！",
+        "code": 200,
+        "result": {
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMTIzNzktMTg0MjZCLUEwRkNFRSIsImlhdCI6MTYyODI0MjQ4MCwiZXhwIjoxNjI4MjQ5NjgwfQ.Gknct6XlTgYK_gCXjRqwH-mF5TqaUHLfJ_8GTPyTF8fuBOKsjAagwZBGBJn08MIuI5dn65euqzBjwXekCplaZw"
+        },
+        "timestamp": timestamp()
+    })
+})
+
+
+
+
+app.post('/qrcode/id', (req, res) => {
+    res.json({
+        "success": true,
+        "message": "操作成功！",
+        "code": 200,
+        "result": {
+            "date": getDate(),
+            "reason": "",
+            "stopOverCity": "",
+            "name": "王*",
+            "id": "5119**********0031",
+            "status": healthCode[random(0,2)], 
+        },
+        "timestamp": timestamp()
+    })
+})
+
+app.post("/qrcode/code", (req, res) => {
+    res.json({
+        "success": true,
+        "message": "操作成功！",
+        "code": 200,
+        "result": {
+            "date": getDate(),
+            "reason": "",
+            "stopOverCity": "",
+            "name": "王*",
+            "id": "5119**********0031",
+            "status": healthCode[random(0,2)], 
+        },
+        "timestamp": timestamp()
+    })
+})
+
+
+
+
+
+const port = 5000;
 app.listen(port, () => httpDebug(`server started at ${port}`));
