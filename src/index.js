@@ -101,14 +101,14 @@ function getDate() {
 
 const healthCode = ["00", "01", "10"];
 const statusCode = [200, 500, 500, 500];
-const errorMessages = ["操作成功！", "Chiến dịch thành công"];
+const errorMessages = ["Success", "Chiến dịch thành công"];
 const reasons = ["", "some reasons"];
 const cities = ["", "some cities"];
 
 app.post('/qrcode/login', (req, res) => {
     res.json({
         "success": true,
-        "message": "操作成功！",
+        "message": "success",
         "code": 200,
         "result": {
             "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMTIzNzktMTg0MjZCLUEwRkNFRSIsImlhdCI6MTYyODI0MjQ4MCwiZXhwIjoxNjI4MjQ5NjgwfQ.Gknct6XlTgYK_gCXjRqwH-mF5TqaUHLfJ_8GTPyTF8fuBOKsjAagwZBGBJn08MIuI5dn65euqzBjwXekCplaZw"
