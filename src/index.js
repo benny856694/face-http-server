@@ -124,7 +124,7 @@ app.post('/qrcode/id', (req, res) => {
     let code = statusCode[random(0, 3)]
     let message = code === 200 ? errorMessages[0] : errorMessages[1]
     let reason = reasons[random(0, 1)]
-    let cities = cities[random(0, 1)]
+    let city = cities[random(0, 1)]
     res.json({
         "success": true,
         "message": message,
@@ -132,7 +132,7 @@ app.post('/qrcode/id', (req, res) => {
         "result": {
             "date": getDate(),
             "reason": reason,
-            "stopOverCity": cities,
+            "stopOverCity": city,
             "name": "Wang*",
             "id": "5119**********0031",
             "status": healthCode[random(0, 2)],
@@ -145,7 +145,7 @@ app.post("/qrcode/code", (req, res) => {
     let code = statusCode[random(0, 3)]
     let message = code === 200 ? errorMessages[0] : errorMessages[1]
     let reason = reasons[random(0, 1)]
-    let cities = cities[random(0, 1)]
+    let city = cities[random(0, 1)]
     res.json({
         "success": true,
         "message": message,
@@ -153,7 +153,7 @@ app.post("/qrcode/code", (req, res) => {
         "result": {
             "date": getDate(),
             "reason": reason,
-            "stopOverCity": cities,
+            "stopOverCity": city,
             "name": "Wang*",
             "id": "5119**********0031",
             "status": healthCode[random(0, 2)],
