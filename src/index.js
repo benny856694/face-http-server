@@ -7,7 +7,9 @@ const fcmDebug = require('debug')('fcm')
 
 const app = express();
 app.use(volleyball)
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+    extended: true
+}));
 app.use(express.json());
 
 var start = Date.now()
@@ -21,21 +23,25 @@ function msToTime(ms) {
     else if (minutes < 60) return minutes + " Min";
     else if (hours < 24) return hours + " Hrs";
     else return days + " Days"
-  }
+}
 
 app.get('/', (req, res) => {
-    res.json({error: 0, message: 'well done!', running: `${msToTime(Date.now()-start)}`})
+    res.json({
+        error: 0,
+        message: 'well done!',
+        running: `${msToTime(Date.now()-start)}`
+    })
 })
 
 
-app.get('/fcm/send', async(req, res) => {
+app.get('/fcm/send', async (req, res) => {
     try {
         const resp = await fcm.sendTo()
         fcmDebug('%O', resp)
         res.sendStatus(resp.status)
     } catch (err) {
         fcmDebug('%O', err.response)
-        if(err.response) {
+        if (err.response) {
             res.sendStatus(err.response.status)
         } else {
             res.status(500).send(err.message)
@@ -48,12 +54,16 @@ app.post('/upload/record', (req, res) => {
     req.body.match && (req.body.match.image = "removed");
     httpDebug(`===============Receive: ${req.body.sequence_no}==================`)
     httpDebug("body: %O", req.body);
-    var result = { reply: "ACK", cmd: "face", code: 0};
+    var result = {
+        reply: "ACK",
+        cmd: "face",
+        code: 0
+    };
     result.cap_time = req.body.cap_time;
     result.sequence_no = req.body.sequence_no;
-    httpDebug("res: %O", result);  
-    res.json(result);  
- 
+    httpDebug("res: %O", result);
+    res.json(result);
+
 })
 
 
@@ -62,12 +72,15 @@ app.post('/net', (req, res) => {
     req.body.match && (req.body.match.image = "removed");
     httpDebug(`===============Receive: ${req.body.sequence_no}==================`)
     httpDebug("body: %O", req.body);
-    var result = { code: 200, message: "success" };
+    var result = {
+        code: 200,
+        message: "success"
+    };
     result.cap_time = req.body.cap_time;
     result.sequence_no = req.body.sequence_no;
-    httpDebug("res: %O", result);  
-    res.json(result);  
- 
+    httpDebug("res: %O", result);
+    res.json(result);
+
 })
 
 
@@ -86,9 +99,11 @@ function getDate() {
 }
 
 
-const healthCode = ["00","01", "10"];
-const statusCode = [200, 500];
-const errorMessages = ["操作成功！", "服务器异常"];
+const healthCode = ["00", "01", "10"];
+const statusCode = [200, 500, 500, 500];
+const errorMessages = ["操作成功！", "Chiến dịch thành công"];
+const reasons = ["", "some reasons"];
+const cities = ["", "some cities"];
 
 app.post('/qrcode/login', (req, res) => {
     res.json({
@@ -106,36 +121,42 @@ app.post('/qrcode/login', (req, res) => {
 
 
 app.post('/qrcode/id', (req, res) => {
-    res.json({
-        "success": true,
-        "message": "操作成功！",
-        "code": 200,
-        "result": {
-            "date": getDate(),
-            "reason": "",
-            "stopOverCity": "",
-            "name": "王*",
-            "id": "5119**********0031",
-            "status": healthCode[random(0,2)], 
-        },
-        "timestamp": timestamp()
-    })
-})
-
-app.post("/qrcode/code", (req, res) => {
-    let code = statusCode[random(0,1)]
+    let code = statusCode[random(0, 3)]
     let message = code === 200 ? errorMessages[0] : errorMessages[1]
+    let reason = reasons[random(0, 1)]
+    let cities = cities[random(0, 1)]
     res.json({
         "success": true,
         "message": message,
         "code": code,
         "result": {
             "date": getDate(),
-            "reason": "",
-            "stopOverCity": "",
-            "name": "王*",
+            "reason": reason,
+            "stopOverCity": cities,
+            "name": "Wang*",
             "id": "5119**********0031",
-            "status": healthCode[random(0,2)], 
+            "status": healthCode[random(0, 2)],
+        },
+        "timestamp": timestamp()
+    })
+})
+
+app.post("/qrcode/code", (req, res) => {
+    let code = statusCode[random(0, 3)]
+    let message = code === 200 ? errorMessages[0] : errorMessages[1]
+    let reason = reasons[random(0, 1)]
+    let cities = cities[random(0, 1)]
+    res.json({
+        "success": true,
+        "message": message,
+        "code": code,
+        "result": {
+            "date": getDate(),
+            "reason": reason,
+            "stopOverCity": cities,
+            "name": "Wang*",
+            "id": "5119**********0031",
+            "status": healthCode[random(0, 2)],
         },
         "timestamp": timestamp()
     })
