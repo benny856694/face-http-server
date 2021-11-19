@@ -7,7 +7,25 @@ post http://localhost:5000/qrcode/code
 
 
 ###
-post http://192.168.0.69:8000
+post http://192.168.0.169:8000
 Content-Type: application/json
 
-{"version": "0.2","cmd": "play audio", "audio_no": 0, "audio_name": "useless" }
+{ 
+    "version": "0.2", 
+    "cmd": "gpio control", 
+    "port": 1, 
+    "ctrl_type": "off", 
+    "ctrl_mode": "force",
+    "person_id": "2",
+    "info": {
+        "showInfo": "abc",
+        "voicePlay": "No0.abc.wav"
+    }
+}
+
+###
+post http://192.168.0.169:8000
+Content-Type: application/json
+
+123424423434
+

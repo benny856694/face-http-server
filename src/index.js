@@ -100,10 +100,12 @@ function getDate() {
 
 
 const healthCode = ["00", "01", "10"];
-const statusCode = [200, 500, 500, 500];
+const statusCode = [200, 500];
 const errorMessages = ["Success", "Chiến dịch thành công"];
 const reasons = ["", "some reasons"];
 const cities = ["", "some cities"];
+var statusCodeIndex = 0;
+var healthCodeIndex = 0;
 
 app.post('/qrcode/login', (req, res) => {
     res.json({
@@ -118,10 +120,8 @@ app.post('/qrcode/login', (req, res) => {
 })
 
 
-
-
 app.post('/qrcode/id', (req, res) => {
-    let code = statusCode[random(0, 3)]
+    let code = statusCode[statusCodeIndex++%statusCode.length];
     let message = code === 200 ? errorMessages[0] : errorMessages[1]
     let reason = reasons[random(0, 1)]
     let city = cities[random(0, 1)]
@@ -135,14 +135,14 @@ app.post('/qrcode/id', (req, res) => {
             "stopOverCity": city,
             "name": "Wang*",
             "id": "5119**********0031",
-            "status": healthCode[random(0, 2)],
+            "status": healthCode[healthCodeIndex++%healthCode.length],
         },
         "timestamp": timestamp()
     })
 })
 
 app.post("/qrcode/code", (req, res) => {
-    let code = statusCode[random(0, 3)]
+    let code = statusCode[statusCodeIndex++%statusCode.length];
     let message = code === 200 ? errorMessages[0] : errorMessages[1]
     let reason = reasons[random(0, 1)]
     let city = cities[random(0, 1)]
@@ -156,7 +156,7 @@ app.post("/qrcode/code", (req, res) => {
             "stopOverCity": city,
             "name": "Wang*",
             "id": "5119**********0031",
-            "status": healthCode[random(0, 2)],
+            "status": healthCode[healthCodeIndex++%healthCode.length],
         },
         "timestamp": timestamp()
     })
