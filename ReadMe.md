@@ -1,0 +1,1 @@
+[How to enable debug output](https://www.npmjs.com/package/debug)

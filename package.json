@@ -22,7 +22,7 @@
   "scripts": {
     "build:prod": "webpack --config webpack.config.prod.js",
     "build:dev": "webpack --config webpack.config.js",
-    "run:dev": "nodemon src/index.js",
+    "run:dev": "@powershell -Command $env:DEBUG='http';nodemon ./src/index.js",
     "run:build": "nodemon dist/index"
   }
 }

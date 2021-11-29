@@ -84,6 +84,7 @@ app.post('/net', (req, res) => {
 })
 
 
+
 function timestamp() {
     var d = new Date();
     return d.getTime();
@@ -99,10 +100,10 @@ function getDate() {
 }
 
 
-const healthCode = ["00", "01", "10"];
-const statusCode = [200, 500];
+const healthCode = ["00", "00", "00",  "01", "10"];
+const statusCode = [200, 200, 200, 500];
 const errorMessages = ["Success", "Chiến dịch thành công"];
-const reasons = ["", "some reasons"];
+const reasons = ["some reason1", "some reason2"];
 const cities = ["", "some cities"];
 var statusCodeIndex = 0;
 var healthCodeIndex = 0;
