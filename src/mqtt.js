@@ -25,6 +25,8 @@ client.on('message', function (topic, message) {
         //remove a property
         delete req.closeup_pic
         debug(`face capture(${Date()}):  `, JSON.stringify(req))
+        debug('==============================\n')
+
         var resp = {
             reply: "ACK",
             cmd: "face",
