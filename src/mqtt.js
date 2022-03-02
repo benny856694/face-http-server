@@ -22,7 +22,9 @@ client.on('message', function (topic, message) {
     // message is Buffer
     if (topic === topicFaceCaptureReq) {
         var req = JSON.parse(message.toString())
-        debug(`face capture(${Date()}):  `, req.sequence_no, req.device_sn, req.cap_time)
+        //remove a property
+        delete req.closeup_pic
+        debug(`face capture(${Date()}):  `, JSON.stringify(req))
         var resp = {
             reply: "ACK",
             cmd: "face",
