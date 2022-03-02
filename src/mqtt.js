@@ -2,11 +2,20 @@ const debug = require('debug')('mqtt')
 require('debug').enable('mqtt');
 
 const mqtt = require('mqtt')
-const client = mqtt.connect('mqtt://s1.huaan-smart.com')
+
 
 let clientId = 'abcd1235'
 let topicFaceCaptureReq = `topic/face/capture/request/${clientId}`
 let topicFaceCaptureResp = `topic/face/capture/response/${clientId}`
+
+let mqttServer = 'mqtt://s1.huaan-smart.com'
+let mqttUserName = ''
+let mqttPassword = ''
+
+const client = mqtt.connect(mqttServer, {
+    username: mqttUserName,
+    password: mqttPassword
+})
 
 client.on('connect', function () {
     client.subscribe(topicFaceCaptureReq, function (err) {
