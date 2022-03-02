@@ -6,6 +6,7 @@
     "debug": "^4.3.2",
     "express": "^4.17.1",
     "google-auth-library": "^7.5.0",
+    "mqtt": "^4.3.6",
     "volleyball": "^1.5.1",
     "winston": "^3.3.3"
   },
@@ -22,7 +23,8 @@
   "scripts": {
     "build:prod": "webpack --config webpack.config.prod.js",
     "build:dev": "webpack --config webpack.config.js",
-    "run:dev": "@powershell -Command $env:DEBUG='http';nodemon ./src/index.js",
-    "run:build": "nodemon dist/index"
+    "run-http:dev": "@powershell -Command $env:DEBUG='http';nodemon ./src/index.js",
+    "run-mqtt:dev": "@powershell -Command $env:DEBUG='http';nodemon ./src/mqtt.js",
+    "run-http:build": "nodemon dist/index"
   }
 }

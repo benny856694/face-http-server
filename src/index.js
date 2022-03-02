@@ -14,16 +14,15 @@ app.use(express.json());
 
 var start = Date.now()
 
-function msToTime(ms) {
-    let seconds = (ms / 1000).toFixed(1);
-    let minutes = (ms / (1000 * 60)).toFixed(1);
-    let hours = (ms / (1000 * 60 * 60)).toFixed(1);
-    let days = (ms / (1000 * 60 * 60 * 24)).toFixed(1);
-    if (seconds < 60) return seconds + " Sec";
-    else if (minutes < 60) return minutes + " Min";
-    else if (hours < 24) return hours + " Hrs";
-    else return days + " Days"
+//convert millisecond to human-readable string
+function msToTime(duration) {
+    var milliseconds = parseInt((duration % 1000) / 100),
+        seconds = parseInt((duration / 1000) % 60),
+        minutes = parseInt((duration / (1000 * 60)) % 60),
+        hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+        return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
+
 
 app.get('/', (req, res) => {
     res.json({
@@ -100,7 +99,7 @@ function getDate() {
 }
 
 
-const healthCode = ["00", "00", "00",  "01", "10"];
+const healthCode = ["00", "00", "00",  "00", "00"];
 const statusCode = [200, 200, 200, 500];
 const errorMessages = ["Success", "Chiến dịch thành công"];
 const reasons = ["some reason1", "some reason2"];
