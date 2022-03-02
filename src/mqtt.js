@@ -1,3 +1,6 @@
+const debug = require('debug')('mqtt')
+require('debug').enable('mqtt');
+
 const mqtt = require('mqtt')
 const client = mqtt.connect('mqtt://s1.huaan-smart.com')
 
@@ -8,9 +11,9 @@ let topicFaceCaptureResp = `topic/face/capture/response/${clientId}`
 client.on('connect', function () {
     client.subscribe(topicFaceCaptureReq, function (err) {
         if (err) {
-            console.log(err)
+            debug(err)
         } else {
-            console.log('subscribe success')
+            debug('subscribe success')
         }
     })
 })
@@ -19,7 +22,7 @@ client.on('message', function (topic, message) {
     // message is Buffer
     if (topic === topicFaceCaptureReq) {
         var req = JSON.parse(message.toString())
-        console.log(`face capture received: ${req.sequence_no}, ${req.device_no}, ${req.cap_time}`)
+        debug(`face capture(${Date()}):  `, req.sequence_no, req.device_sn, req.cap_time)
         var resp = {
             reply: "ACK",
             cmd: "face",
