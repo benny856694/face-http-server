@@ -33,6 +33,7 @@ client.on('message', function (topic, message) {
         var req = JSON.parse(message.toString())
         //remove a property
         delete req.closeup_pic
+        delete req.match.image
         debug(`face capture(${Date()}):  `, JSON.stringify(req))
         debug('==============================')
 
