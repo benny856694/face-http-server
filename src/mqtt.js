@@ -33,9 +33,19 @@ client.on('message', function (topic, message) {
         var req = JSON.parse(message.toString())
         //remove a property
         delete req.closeup_pic
-        delete req.match.image
+        if (req?.match?.image)
+            delete req.match.image
+        if (req?.overall_pic)
+            delete req.overall_pic
+        if (!req.is_realtime) {
+            //repeat 3 times
+            for (let i = 0; i < 3; i++) {
+                debug(i == 1 ? ' *************** ' : '')
+            }
+        }
+
+        debug(`============Seq: ${req.sequence_no}, Realtime: ${req.is_realtime}, CapTime: ${req.cap_time}, LogTime:${new Date()}==================`)
         debug(`face capture(${Date()}):  `, JSON.stringify(req))
-        debug('==============================')
 
         var resp = {
             reply: "ACK",
