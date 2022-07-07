@@ -36,25 +36,36 @@ wss.on('connection', function connection(ws) {
             if (command.servercmd == 'send to device') {
                 if (clients[command.device_sn]) {
                     clients[command.device_sn].send(JSON.stringify(command.data));
+
+                    if (command.data && command.data.command_id) {
+                        setTimeout(() => {
+                            if (replies[command.data.command_id]) {
+                                ws.send(JSON.stringify(replies[command.data.command_id]));
+                                delete replies[command.data.command_id];
+                            } else {
+                                ws.send(JSON.stringify({
+                                    servercmd: 'send to device',
+                                    device_sn: command.device_sn,
+                                    data: {
+                                        command_id: command.data.command_id,
+                                        status: 'timeout'
+                                    }
+                                }));
+                            }
+                        }, 2000);
+                    }
+                } else {
+                    ws.send(JSON.stringify({
+                        servercmd: 'send to device',
+                        device_sn: command.device_sn,
+                        data: {
+                            command_id: command.data.command_id,
+                            status: 'device not found'
+                        }
+                    }));
                 }
 
-                if (command.data && command.data.command_id) {
-                    setTimeout(() => {
-                        if (replies[command.data.command_id]) {
-                            ws.send(JSON.stringify(replies[command.data.command_id]));
-                            delete replies[command.data.command_id];
-                        } else {
-                            ws.send(JSON.stringify({
-                                servercmd: 'send to device',
-                                device_sn: command.device_sn,
-                                data: {
-                                    command_id: command.data.command_id,
-                                    status: 'timeout'
-                                }
-                            }));
-                        }
-                    }, 2000);
-                }
+                
 
             }
         }
