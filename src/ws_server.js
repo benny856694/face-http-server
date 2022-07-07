@@ -31,7 +31,7 @@ wss.on('connection', function connection(ws) {
         }
 
 
-        //server command format {servercmd: "send to device", device_sn: "xxxxxxxx", data: {command_id: "xxxxxx", cmd: "heart beat"}}
+        //server command format {servercmd: "send to device", device_sn: "xxxxxxxx", data: {command_id: "xxxxxx", cmd: "xxxx"}}
         if (command.servercmd) {
             if (command.servercmd == 'send to device') {
                 if (clients[command.device_sn]) {
