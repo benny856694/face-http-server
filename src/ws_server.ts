@@ -72,6 +72,8 @@ wss.on('connection', function connection(ws) {
                                     delete pendingRequests[command.data.command_id];
                                 }
                             }, 5000);
+                    } else {
+                        ws.send(JSON.stringify({success: false, message: "device not connected"}));
                     }
                 } else {
                    ws.send(JSON.stringify({success: false, message: "command payload must have command_id"}));
