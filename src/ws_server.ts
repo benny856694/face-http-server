@@ -30,14 +30,11 @@ const clients: WebSocket[] = [];
 const pendingRequests: WebSocket[] = [];
 
 wss.on('connection', function connection(ws) {
+    
     ws.on('message', function message(data) {
-        
-        if (typeof data !== 'string') {
-            return;
-        }            
 
         debug('received: %s', data);
-        var command = JSON.parse(data);
+        var command = JSON.parse(data.toString());
 
         //command from device
         if (command.cmd) {
