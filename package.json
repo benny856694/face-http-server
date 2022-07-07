@@ -28,7 +28,7 @@
     "build:dev": "webpack --config webpack.config.js",
     "run-http:dev": "@powershell -Command $env:DEBUG='http';nodemon ./src/index.js",
     "run-mqtt:dev": "@powershell -Command $env:DEBUG='mqtt';nodemon ./src/mqtt.js",
-    "run-ws:dev": "@powershell -Command $env:DEBUG='ws_server';nodemon ./src/ws_server.js",
+    "run-ws:dev": "@powershell -Command $env:DEBUG='ws_server';nodemon ./src/ws_server.ts",
     "run-http:build": "nodemon dist/index"
   }
 }
