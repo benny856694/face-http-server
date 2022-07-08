@@ -29,12 +29,17 @@ const wss = new WebSocketServer({
 const clients: WebSocket[] = [];
 const pendingRequests: WebSocket[] = [];
 
-wss.on('connection', function connection(ws) {
-    
+wss.on('connection', function connection(ws, req) {
+    debug('connection from: %s', req.socket.remoteAddress)
     ws.on('message', function message(data) {
 
-        debug('received: %s', data);
-        var command = JSON.parse(data.toString());
+        var command: any = null;
+        try {
+            command =  JSON.parse(data.toString());
+        } catch (error) {
+            ws.send(JSON.stringify({success: false, message: error.toString()}));
+            return;
+        }
 
         //command from device
         if (command.cmd) {
@@ -51,27 +56,33 @@ wss.on('connection', function connection(ws) {
                 }
             }
 
+            debug(`received cmd: ${command.cmd}, reply: ${command.reply}, device_sn: ${command.device_sn}`);
             return;
         }
 
 
         //server command format {servercmd: "send to device", device_sn: "xxxxxxxx", data: {command_id: "xxxxxx", cmd: "xxxx"}}
         if (command.servercmd) {
+            debug(`received servercmd: ${command.servercmd}, device_sn: ${command.device_sn}`);
             if (command.servercmd === 'send to device') {
-                    if (command.data?.command_id) {
-                        if (clients[command.device_sn]) {
-                            clients[command.device_sn].send(JSON.stringify(command.data));
-                            pendingRequests[command.data.command_id] = ws;
-        
-                            setTimeout(() => {
-                                if (pendingRequests[command.data.command_id]) {
-                                    ws.send(JSON.stringify({success: false, message: "timeout"}));
-                                    delete pendingRequests[command.data.command_id];
-                                }
-                            }, 5000);
-                    } else {
-                        ws.send(JSON.stringify({success: false, message: "device not connected"}));
-                    }
+                if (!command.device_sn) {
+                    ws.send(JSON.stringify({success: false, message: 'device_sn is required'}));
+                    return;
+                }
+                if (command.data?.command_id) {
+                    if (clients[command.device_sn]) {
+                        clients[command.device_sn].send(JSON.stringify(command.data));
+                        pendingRequests[command.data.command_id] = ws;
+    
+                        setTimeout(() => {
+                            if (pendingRequests[command.data.command_id]) {
+                                ws.send(JSON.stringify({success: false, message: "timeout"}));
+                                delete pendingRequests[command.data.command_id];
+                            }
+                        }, 5000);
+                } else {
+                    ws.send(JSON.stringify({success: false, message: "device not connected"}));
+                }
                 } else {
                    ws.send(JSON.stringify({success: false, message: "command payload must have command_id"}));
                 }
