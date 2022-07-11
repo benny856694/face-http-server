@@ -16,15 +16,13 @@ app.use(express.json());
 for (const s in servercfg) {
     if (Object.hasOwnProperty.call(servercfg, s)) {
         const server = servercfg[s];
-        //debug(server);
-        for (const url in server) {
-            if (Object.hasOwnProperty.call(server, url)) {
-                const element = server[url];
-                debug('url:', element.url, 'data:', element.data)
-                app.post(element.url, (req, res) => {
-                    res.json(element.data)
-                } )    
-            }
+        for (let i = 0; i < server.length; ++i) {
+            const cfg = server[i];
+            debug('url:', cfg.url, '--> data:', cfg.data)
+                app.post(cfg.url, (req, res) => {
+                    res.json(cfg.data)
+                } )
+            
         }
        
     }
