@@ -20,9 +20,9 @@ for (const s in servercfg) {
         for (const url in server) {
             if (Object.hasOwnProperty.call(server, url)) {
                 const element = server[url];
-                debug(element.url, element.data)
+                debug('url:', element.url, 'data:', element.data)
                 app.post(element.url, (req, res) => {
-                    res.send(element.data)
+                    res.json(element.data)
                 } )    
             }
         }
