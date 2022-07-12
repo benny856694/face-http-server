@@ -118,4 +118,5 @@ dist
 .pnp.*
 
 
-.zip
+
+*.zip
