@@ -1,7 +1,7 @@
 const express = require('express');
 const httpDebug = require('debug')('http');
 const volleyball = require('volleyball')
-const fcm = require('./fcm')
+
 const fcmDebug = require('debug')('fcm')
 
 
@@ -33,20 +33,7 @@ app.get('/', (req, res) => {
 })
 
 
-app.get('/fcm/send', async (req, res) => {
-    try {
-        const resp = await fcm.sendTo()
-        fcmDebug('%O', resp)
-        res.sendStatus(resp.status)
-    } catch (err) {
-        fcmDebug('%O', err.response)
-        if (err.response) {
-            res.sendStatus(err.response.status)
-        } else {
-            res.status(500).send(err.message)
-        }
-    }
-})
+
 
 app.post('/upload/record', (req, res) => {
     req.body.closeup_pic = "removed";
@@ -166,5 +153,5 @@ app.post("/qrcode/code", (req, res) => {
 
 
 
-const port = 5000;
+const port = 5050;
 app.listen(port, () => httpDebug(`server started at ${port}`));
