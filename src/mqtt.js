@@ -1,5 +1,6 @@
 const debug = require('debug')('mqtt')
 require('debug').enable('mqtt');
+const fs = require('fs')
 
 const mqtt = require('mqtt')
 
@@ -30,7 +31,10 @@ client.on('connect', function () {
 client.on('message', function (topic, message) {
     // message is Buffer
     if (topic === topicFaceCaptureReq) {
-        var req = JSON.parse(message.toString())
+        const json = message.toString()
+        
+        var req = JSON.parse(json)
+        //fs.writeFileSync(`./${req.sequence_no}.json`, json)
         //remove a property
         delete req.closeup_pic
         if (req?.match?.image)
@@ -54,9 +58,7 @@ client.on('message', function (topic, message) {
             sequence_no: req.sequence_no,
             cap_time: req.cap_time,
         }
-        client.publish(topicFaceCaptureResp, JSON.stringify(resp))
+        //client.publish(topicFaceCaptureResp, JSON.stringify(resp))
 
     }
-
-
 })
