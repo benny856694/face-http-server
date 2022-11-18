@@ -117,9 +117,11 @@ wss.on("connection", function connection(ws, req) {
       }, 5000);
     } else {
       debug(parseResult.error.message);
+      const e = parseResult.error.errors[0];
+      const msg = e.path.join(',') + ' ' + e.message;
       let reply: Reply = {
         success: false,
-        message: "invalid format",
+        message: msg,
       };
       ws.send(JSON.stringify(reply));
     }
