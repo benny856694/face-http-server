@@ -2,13 +2,11 @@
 import { z } from "zod";
 //device http command
 //设备定义的http命令，参见http文档
-const commandSchema = z
-  .object({
-    cmd: z.string(),
-    command_id: z.string().optional(),
-    reply: z.string().optional(),
-  })
-  .strip();
+const commandSchema = z.object({
+  cmd: z.string(),
+  command_id: z.string().optional(),
+  reply: z.string().optional(),
+}).passthrough();
 
 const heartBeatSchema = z.object({
   cmd: z.literal("heart beat"),
@@ -63,7 +61,7 @@ wss.on("connection", function connection(ws, req) {
       return;
     }
 
-    let command = commandSchema.passthrough().safeParse(input);
+    let command = commandSchema.safeParse(input);
     //处理命令应答
     if (command.success) {
       debug(
@@ -118,7 +116,7 @@ wss.on("connection", function connection(ws, req) {
     } else {
       debug(parseResult.error.message);
       const e = parseResult.error.errors[0];
-      const msg = e.path.join(',') + ' ' + e.message;
+      const msg = e.path.join(",") + " " + e.message;
       let reply: Reply = {
         success: false,
         message: msg,
