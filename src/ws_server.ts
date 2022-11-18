@@ -1,12 +1,16 @@
 // @ts-check
 import { z } from "zod";
+import { WebSocketServer, WebSocket } from "ws";
+const debug = require("debug")("ws_server");
 //device http command
 //设备定义的http命令，参见http文档
-const commandSchema = z.object({
-  cmd: z.string(),
-  command_id: z.string().optional(),
-  reply: z.string().optional(),
-}).passthrough();
+const commandSchema = z
+  .object({
+    cmd: z.string(),
+    command_id: z.string().optional(),
+    reply: z.string().optional(),
+  })
+  .passthrough();
 
 const heartBeatSchema = z.object({
   cmd: z.literal("heart beat"),
@@ -28,9 +32,6 @@ const requestSchema = z.object({
   device_sn: z.string(),
   data: commandSchema,
 });
-
-import { WebSocketServer, WebSocket } from "ws";
-const debug = require("debug")("ws_server");
 
 const wss = new WebSocketServer({
   port: 8080,
