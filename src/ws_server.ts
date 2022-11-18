@@ -1,20 +1,26 @@
 // @ts-check
 
+//device http command
+//设备定义的http命令，参见http文档
 interface Command {
   cmd: string;
   command_id: string;
 }
 
+//replay to command from backend server
+//给后台命令的应答
 interface Reply {
   success: boolean;
   message?: string;
   data?: any;
 }
 
+//command send from backend server to device
+//从后台发给设备的命令
 interface Request {
   servercmd: "send to device";
   device_sn: string;
-  command: Command;
+  data: Command;
 }
 
 import { WebSocketServer, WebSocket } from "ws";
