@@ -19,6 +19,7 @@ specifiers:
   webpack-shell-plugin: ^0.5.0
   winston: ^3.3.3
   ws: ^8.8.0
+  zod: ^3.19.1
 
 dependencies:
   axios: registry.npmmirror.com/axios/0.21.4_debug@4.3.4
@@ -29,6 +30,7 @@ dependencies:
   volleyball: registry.npmmirror.com/volleyball/1.5.1
   winston: registry.npmmirror.com/winston/3.8.2
   ws: registry.npmmirror.com/ws/8.9.0
+  zod: registry.npmmirror.com/zod/3.19.1
 
 devDependencies:
   '@types/express': registry.npmmirror.com/@types/express/4.17.14
@@ -2962,3 +2964,9 @@ packages:
     version: 3.1.1
     engines: {node: '>=6'}
     dev: true
+
+  registry.npmmirror.com/zod/3.19.1:
+    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/zod/-/zod-3.19.1.tgz}
+    name: zod
+    version: 3.19.1
+    dev: false
