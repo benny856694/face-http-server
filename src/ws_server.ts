@@ -2,16 +2,18 @@
 import { z } from "zod";
 //device http command
 //设备定义的http命令，参见http文档
-class Command {
-  cmd: string = "";
-  command_id?: string;
-  reply?: string;
-}
+const commandSchema = z
+  .object({
+    cmd: z.string(),
+    command_id: z.string().optional(),
+    reply: z.string().optional(),
+  })
+  .strip();
 
-class Heartbeat {
-  cmd: "heart beat" = "heart beat";
-  device_sn: string = "";
-}
+const heartBeatSchema = z.object({
+  cmd: z.literal("heart beat"),
+  device_sn: z.string(),
+});
 
 //replay to command from backend server
 //给后台命令的应答
@@ -23,21 +25,17 @@ class Reply {
 
 //command send from backend server to device
 //从后台发给设备的命令
-class Request {
-  servercmd: "send to device" = "send to device";
-  device_sn: string = "";
-  data: Command = new Command();
-}
-
-const commandSchema = z.instanceof(Command);
-const heartBeatSchema = z.instanceof(Heartbeat);
-const requestSchema = z.instanceof(Request);
+const requestSchema = z.object({
+  servercmd: z.literal("send to device"),
+  device_sn: z.string(),
+  data: commandSchema,
+});
 
 import { WebSocketServer, WebSocket } from "ws";
 const debug = require("debug")("ws_server");
 
 const wss = new WebSocketServer({
-  port: 6009,
+  port: 8080,
   clientTracking: true,
 });
 
@@ -47,7 +45,17 @@ const pendingRequests: { [key: string]: WebSocket } = {};
 wss.on("connection", function connection(ws, req) {
   debug("connection from: %s", req.socket.remoteAddress);
   ws.on("message", function message(data) {
-    let heartBeat = heartBeatSchema.safeParse(data);
+    let input: any;
+    try {
+      input = JSON.parse(data.toString());
+    } catch (error) {
+      ws.send(JSON.stringify({ success: false, message: "invalid json" }));
+      return;
+    }
+
+    debug(input);
+
+    let heartBeat = heartBeatSchema.safeParse(input);
     //received heartbeat, save ws client
     //收到心跳，保存ws客户端和device_sn的映射
     if (heartBeat.success) {
@@ -55,7 +63,7 @@ wss.on("connection", function connection(ws, req) {
       return;
     }
 
-    let command = commandSchema.safeParse(data);
+    let command = commandSchema.passthrough().safeParse(input);
     //处理命令应答
     if (command.success) {
       debug(
@@ -66,12 +74,13 @@ wss.on("connection", function connection(ws, req) {
         if (ws) {
           const reply: Reply = { success: true, data: command.data };
           ws.send(JSON.stringify(reply));
+          delete pendingRequests[command.data.command_id];
         }
       }
       return;
     }
 
-    let parseResult = requestSchema.safeParse(data);
+    let parseResult = requestSchema.safeParse(input);
     //server command format {servercmd: "send to device", device_sn: "xxxxxxxx", data: {command_id: "xxxxxx", cmd: "xxxx"}}
     if (parseResult.success) {
       let req = parseResult.data;
@@ -102,16 +111,17 @@ wss.on("connection", function connection(ws, req) {
       setTimeout(() => {
         if (pendingRequests[req.data.command_id!]) {
           let reply: Reply = { success: false, message: "timeout" };
-          ws.send(reply);
+          ws.send(JSON.stringify(reply));
           delete pendingRequests[req.data.command_id!];
         }
       }, 5000);
     } else {
+      debug(parseResult.error.message);
       let reply: Reply = {
         success: false,
-        message: parseResult.error.toString(),
+        message: "invalid format",
       };
-      ws.send(reply);
+      ws.send(JSON.stringify(reply));
     }
   });
 });
