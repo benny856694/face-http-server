@@ -9,7 +9,8 @@
     "mqtt": "^4.3.6",
     "volleyball": "^1.5.1",
     "winston": "^3.3.3",
-    "ws": "^8.8.0"
+    "ws": "^8.8.0",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
