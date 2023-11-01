@@ -28,7 +28,7 @@
   "scripts": {
     "build:prod": "webpack --config webpack.config.prod.js",
     "build:dev": "webpack --config webpack.config.js",
-    "run-http:dev": "set DEBUG=http & nodemon ./src/index.js",
+    "run-http:dev": "set DEBUG=http,pickfun & nodemon ./src/index.js",
     "run-mqtt:dev": "set DEBUG=mqtt & nodemon ./src/mqtt.js",
     "run-fake_server:dev": "set DEBUG=http & nodemon ./src/fake_server.js",
     "run-ws:dev": "set DEBUG=ws_server & nodemon ./src/ws_server.ts",

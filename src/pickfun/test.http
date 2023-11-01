@@ -1,4 +1,9 @@
 ### token
 get http://localhost:5050/pickfun/device/MiddleWare/biz/getToken?uuid=blahblah
 
-### 
+### device list
+get http://localhost:5050/pickfun/device/MiddleWare/biz/listLiveDevices
+
+
+### report status
+get http://localhost:5050/pickfun/device/MiddleWare/biz/report?id=100&status=1&lastMinutes=123
