@@ -16,6 +16,8 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 
+app.use(express.static('src/public'));
+
 var start = Date.now()
 
 //convert millisecond to human-readable string

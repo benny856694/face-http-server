@@ -69,4 +69,23 @@ router.get('/device/MiddleWare/biz/report', (req, res) => {
   })
 })
 
+router.get('/device/MiddleWare/biz/getLatestMiddleWareUpgradePackage', (req, res) => {
+  res.json({
+    "code": 0,
+    "extraResult": "",
+    "data": {
+      "id": "",
+      "version": "1.0.5.0",
+      "mandatory": {
+        "mode": 0,
+        "value": false
+      },
+      "url": "http://localhost:5050/installer.exe"
+    },
+    "success": true,
+    "message": "",
+    "timestamp": 0
+  })
+})
+
 

@@ -7,3 +7,7 @@ get http://localhost:5050/pickfun/device/MiddleWare/biz/listLiveDevices
 
 ### report status
 get http://localhost:5050/pickfun/device/MiddleWare/biz/report?id=100&status=1&lastMinutes=123
+
+
+### get file
+get http://localhost:5050/installer.exe
