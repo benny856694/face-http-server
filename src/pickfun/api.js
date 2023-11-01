@@ -9,7 +9,8 @@ export const router = express.Router()
 // middleware that is specific to this router
 router.use((req, res, next) => {
   //console.log('Time: ', Date.now())
-  pickfun('request header: %O', req.headers);
+  pickfun('request header')
+  pickfun('%O', req.headers);
   pickfun('query: %O', req.query);
   next()
 })
