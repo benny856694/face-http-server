@@ -1,3 +1,4 @@
+const dayjs = require('dayjs')
 const debug = require('debug')('mqtt')
 require('debug').enable('mqtt');
 const fs = require('fs')
@@ -9,7 +10,7 @@ let clientId = 'abcd1235'
 let topicFaceCaptureReq = `topic/face/capture/request/${clientId}`
 let topicFaceCaptureResp = `topic/face/capture/response/${clientId}`
 
-let mqttServer = 'mqtt://s1.huaan-smart.com'
+let mqttServer = 'mqtt://47.108.73.83:1883'
 let mqttUserName = ''
 let mqttPassword = ''
 
@@ -30,10 +31,13 @@ client.on('connect', function () {
 
 client.on('message', function (topic, message) {
     // message is Buffer
+    const json = message.toString()
+    var req = JSON.parse(json)
+
+    debug(`topic: ${topic}, message: ${JSON.stringify(req)}`)
+
+
     if (topic === topicFaceCaptureReq) {
-        const json = message.toString()
-        
-        var req = JSON.parse(json)
         //fs.writeFileSync(`./${req.sequence_no}.json`, json)
         //remove a property
         delete req.closeup_pic
@@ -58,7 +62,10 @@ client.on('message', function (topic, message) {
             sequence_no: req.sequence_no,
             cap_time: req.cap_time,
         }
-        //client.publish(topicFaceCaptureResp, JSON.stringify(resp))
+        setTimeout(() => {
+            client.publish(topicFaceCaptureResp, JSON.stringify(resp))
+        }, 1000*1);
+        
 
     }
 })

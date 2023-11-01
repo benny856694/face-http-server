@@ -1,8 +1,11 @@
-const express = require('express');
-const httpDebug = require('debug')('http');
-const volleyball = require('volleyball')
+import express from 'express';
+import debug from 'debug';
+import volleyball from 'volleyball';
 
-const fcmDebug = require('debug')('fcm')
+const httpDebug = debug('http');
+const fcmDebug = debug('fcm')
+
+import { router as pickfun } from './pickfun/api.js';
 
 
 const app = express();
@@ -148,6 +151,8 @@ app.post("/qrcode/code", (req, res) => {
         "timestamp": timestamp()
     })
 })
+
+app.use('/pickfun', pickfun);
 
 
 
