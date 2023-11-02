@@ -10,17 +10,17 @@ let loggedIn = false;
 let devices = [
   {
     "liveAble": true,
-    "snId": "xxxx",
-    "name": "PickFun",
+    "snId": "100",
+    "name": "PickFun100",
     "localIp": "192.168.0.100",
     "id": '100',
-    "live": true,
+    "live": false,
     "mac": "xxxx"
   },
   {
     "liveAble": true,
-    "snId": "xxxx",
-    "name": "PickFun",
+    "snId": "101",
+    "name": "PickFun167",
     "localIp": "192.168.0.167",
     "id": '101',
     "live": false,
@@ -28,11 +28,11 @@ let devices = [
   },
   {
     "liveAble": true,
-    "snId": "xxxx",
-    "name": "PickFun",
+    "snId": "102",
+    "name": "PickFun168",
     "localIp": "192.168.0.168",
     "id": '102',
-    //"live": false,
+    "live": true,
     "mac": "xxxx"
   },
 ]
