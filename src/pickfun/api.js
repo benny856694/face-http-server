@@ -6,6 +6,28 @@ import crypto from 'crypto'
 const pickfun = debug('pickfun');
 export const router = express.Router()
 
+let loggedIn = false;
+let devices = [
+  {
+    "liveAble": true,
+    "snId": "xxxx",
+    "name": "PickFun",
+    "localIp": "192.168.0.100",
+    "id": '100',
+    "live": true,
+    "mac": "xxxx"
+  },
+  {
+    "liveAble": true,
+    "snId": "xxxx",
+    "name": "PickFun",
+    "localIp": "192.168.0.167",
+    "id": '101',
+    "live": false,
+    "mac": "xxxx"
+  }
+]
+
 // middleware that is specific to this router
 router.use((req, res, next) => {
   //console.log('Time: ', Date.now())
@@ -14,9 +36,27 @@ router.use((req, res, next) => {
   pickfun('query: %O', req.query);
   next()
 })
-// define the home page route
+
+router.use((req, res, next) => {
+  if (!req.path.endsWith('getToken') && !loggedIn) {
+    res.status(401).json(
+      {
+        "code": 401,
+        "extraResult": "",
+        "data": req.query.uuid,
+        "success": true,
+        "message": "",
+        "timestamp": 0
+      }
+    )
+  } else {
+    next()
+  }
+})
+
+// request token
 router.get('/device/MiddleWare/biz/getToken', (req, res) => {
-    
+    loggedIn = true;
     res.json({
         "code": 0,
         "extraResult": "",
@@ -26,56 +66,100 @@ router.get('/device/MiddleWare/biz/getToken', (req, res) => {
         "timestamp": 0
     });
 })
-// define the about route
+
+
+// logout
+router.get('/device/MiddleWare/biz/logout', (req, res) => {
+    loggedIn = false;
+    res.json({
+        "code": 0,
+        "extraResult": "",
+        "data": req.query.uuid,
+        "success": true,
+        "message": "",
+        "timestamp": 0
+    });
+})
+
+
+// device list
 router.get('/device/MiddleWare/biz/listLiveDevices', (req, res) => {
   
   res.json({
     "code": 0,
     "extraResult": "",
-    "data": [
-      {
-        "liveAble": true,
-        "snId": "xxxx",
-        "name": "PickFun",
-        "localIp": "192.168.0.100",
-        "id": '100',
-        "live": true,
-        "mac": "xxxx"
-      },
-      {
-        "liveAble": true,
-        "snId": "xxxx",
-        "name": "PickFun",
-        "localIp": "192.168.0.167",
-        "id": '101',
-        "live": false,
-        "mac": "xxxx"
-      }
-    ],
+    "data": devices,
     "success": true,
     "message": "",
     "timestamp": 0
   })
 })
 
+//delete device
+router.get('/device/MiddleWare/biz/deletedevice', (req, res) => {
+  let idx = findIndexOfDevice(req);
+  if (idx !== -1) {
+    devices.splice(idx, 1);
+    res.json({
+      "code": 0,
+      "extraResult": "",
+      "data": devices,
+      "success": true,
+      "message": "",
+      "timestamp": 0
+    })
+  } else {
+    res.status(404).json({
+      "code": 0,
+      "extraResult": "",
+      "data": devices,
+      "success": false,
+      "message": "",
+      "timestamp": 0
+    })
+  }
+ 
+})
+
+
+
+
+
+//report status
 router.get('/device/MiddleWare/biz/report', (req, res) => {
-  res.json({
-    "code": 0,
-    "extraResult": "",
-    "data": {},
-    "success": true,
-    "message": "",
-    "timestamp": 0
-  })
+  const idx = findIndexOfDevice(req)
+  if (idx === -1) {
+    res.status(404).json(
+      {
+        "code": 404,
+        "extraResult": "",
+        "data": {},
+        "success": false,
+        "message": "",
+        "timestamp": 0
+      }
+    )
+  } else {
+    res.json({
+      "code": 0,
+      "extraResult": "",
+      "data": {},
+      "success": true,
+      "message": "",
+      "timestamp": 0
+    })
+  }
 })
 
+
+//upgrade package
 router.get('/device/MiddleWare/biz/getLatestMiddleWareUpgradePackage', (req, res) => {
   res.json({
     "code": 0,
     "extraResult": "",
     "data": {
       "id": "",
-      "version": "1.0.5.0",
+      "version": "1.0.0.0",
       "mandatory": {
         "mode": 0,
         "value": false
@@ -88,4 +172,10 @@ router.get('/device/MiddleWare/biz/getLatestMiddleWareUpgradePackage', (req, res
   })
 })
 
+
+function findIndexOfDevice(req) {
+  let id = req.query.id;
+  let idx = devices.findIndex(v => v.id === id);
+  return idx;
+}
 
