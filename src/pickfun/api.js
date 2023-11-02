@@ -25,7 +25,16 @@ let devices = [
     "id": '101',
     "live": false,
     "mac": "xxxx"
-  }
+  },
+  {
+    "liveAble": true,
+    "snId": "xxxx",
+    "name": "PickFun",
+    "localIp": "192.168.0.168",
+    "id": '102',
+    //"live": false,
+    "mac": "xxxx"
+  },
 ]
 
 // middleware that is specific to this router
@@ -97,7 +106,7 @@ router.get('/device/MiddleWare/biz/listLiveDevices', (req, res) => {
 
 //delete device
 router.get('/device/MiddleWare/biz/deletedevice', (req, res) => {
-  let idx = findIndexOfDevice(req);
+  let idx = findIndexOfDevice(req.query.id);
   if (idx !== -1) {
     devices.splice(idx, 1);
     res.json({
@@ -122,12 +131,9 @@ router.get('/device/MiddleWare/biz/deletedevice', (req, res) => {
 })
 
 
-
-
-
 //report status
 router.get('/device/MiddleWare/biz/report', (req, res) => {
-  const idx = findIndexOfDevice(req)
+  const idx = findIndexOfDevice(req.query.id)
   if (idx === -1) {
     res.status(404).json(
       {
@@ -144,6 +150,35 @@ router.get('/device/MiddleWare/biz/report', (req, res) => {
       "code": 0,
       "extraResult": "",
       "data": {},
+      "success": true,
+      "message": "",
+      "timestamp": 0
+    })
+  }
+})
+
+
+//update ip, id={}&ip={}
+router.get('/device/MiddleWare/biz/update', (req, res) => {
+  const idx = findIndexOfDevice(req.query.id)
+  if (idx === -1) {
+    res.status(404).json(
+      {
+        "code": 404,
+        "extraResult": "",
+        "data": {},
+        "success": false,
+        "message": "",
+        "timestamp": 0
+      }
+    )
+  } else {
+    let dev = devices[idx];
+    dev.localIp = req.query.ip;
+    res.json({
+      "code": 0,
+      "extraResult": "",
+      "data": dev,
       "success": true,
       "message": "",
       "timestamp": 0
@@ -173,8 +208,7 @@ router.get('/device/MiddleWare/biz/getLatestMiddleWareUpgradePackage', (req, res
 })
 
 
-function findIndexOfDevice(req) {
-  let id = req.query.id;
+function findIndexOfDevice(id) {
   let idx = devices.findIndex(v => v.id === id);
   return idx;
 }

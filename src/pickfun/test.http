@@ -5,6 +5,13 @@ get http://localhost:5050/pickfun/device/MiddleWare/biz/getToken?uuid=blahblah
 ### logout
 get http://localhost:5050/pickfun/device/MiddleWare/biz/logout
 
+
+### update ip by id
+get http://localhost:5050/pickfun/device/MiddleWare/biz/update?id=100&ip=192.168.0.254
+
+### delete device by id
+get http://localhost:5050/pickfun/device/MiddleWare/biz/deletedevice?id=100
+
 ### device list
 get http://localhost:5050/pickfun/device/MiddleWare/biz/listLiveDevices
 
@@ -17,5 +24,3 @@ get http://localhost:5050/pickfun/device/MiddleWare/biz/report?id=100&status=1&l
 get http://localhost:5050/installer.exe
 
 
-### delete device by id
-get http://localhost:5050/pickfun/device/MiddleWare/biz/deletedevice?id=100
