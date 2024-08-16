@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 const baseUrl = 'https://api.pick-fun.com.cn/app/common/deviceForceUpgradeUrl?md5=0b05e202278358b93108e5d9154aea6b&size=131039540&sn=';
 const urlSuffix = '&url=https%3A%2F%2Fmaterial.pick-fun.com.cn%2Fupgrade_package%2Fdepi_net0.2.1015.13267_1723703407325.tar.gz';
