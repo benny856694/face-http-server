@@ -39,22 +39,53 @@ app.get('/', (req, res) => {
 })
 
 
+async function testApi(faceImage) {
+   const api = "http://154.26.132.220:5090/api/FaceEngine/VerifyFaceByKey";
+   const apikeyValue = 'A369FA9F-1A17-43F5-ABDE-4A0AE5C3E7AA';
+   const authkey = 'x-api-key';
+
+   const response = await fetch(api, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apikeyValue,
+    },
+    body: JSON.stringify({
+      faceData: faceImage,
+      entityId: 2,
+      apiKeyValue: apikeyValue,
+      remark:"PROFILE-PHOTO"
+    })
+  });
+  const result = await response.json();
+  return result;
+}
 
 
-app.post('/upload/record', (req, res) => {
-    req.body.closeup_pic = "removed";
-    req.body.match && (req.body.match.image = "removed");
-    httpDebug(`===============Receive: ${req.body.sequence_no}==================`)
-    httpDebug("body: %O", req.body);
+app.post('/upload/record', async (req, res) => {
+    //req.body.closeup_pic = "removed";
+    //req.body.match && (req.body.match.image = "removed");
+    //httpDebug(`===============Receive: ${req.body.sequence_no}==================`)
+    //httpDebug("body: %O", req.body);
     var result = {
         reply: "ACK",
         cmd: "face",
-        code: 0
+        code: 0,
+        cap_time: req.body.cap_time,
+        sequence_no: req.body.sequence_no,
+        data: {
+            match_success: true,
+            personName: "some one",
+            personId: 123,
+            profileImage: "base64"
+        }
     };
-    result.cap_time = req.body.cap_time;
-    result.sequence_no = req.body.sequence_no;
-    httpDebug("res: %O", result);
+    
+   // httpDebug("res: %O", result);
     res.json(result);
+
+    const apiResult = await testApi(req.body.closeup_pic.data);
+    httpDebug("apiResult: %O", apiResult);
 
 })
 
