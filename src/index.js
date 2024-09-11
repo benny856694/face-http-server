@@ -40,8 +40,8 @@ app.get('/', (req, res) => {
 
 
 async function testApi(faceImage) {
-   const api = "http://154.26.132.220:5090/api/FaceEngine/VerifyFaceByKey";
-   const apikeyValue = 'A369FA9F-1A17-43F5-ABDE-4A0AE5C3E7AA';
+   const api = "http://xxxx:5090/api/FaceEngine/VerifyFaceByKey";
+   const apikeyValue = 'abc';
    const authkey = 'x-api-key';
 
    const response = await fetch(api, {
