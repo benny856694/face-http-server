@@ -84,8 +84,11 @@ app.post('/upload/record', async (req, res) => {
    // httpDebug("res: %O", result);
     res.json(result);
 
-    const apiResult = await testApi(req.body.closeup_pic.data);
-    httpDebug("apiResult: %O", apiResult);
+    if (req.body.closeup_pic && req.body.closeup_pic.data) {
+        const apiResult = await testApi(req.body.closeup_pic.data);
+        httpDebug("apiResult: %O", apiResult);
+    }
+    
 
 })
 
